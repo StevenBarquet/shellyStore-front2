@@ -1,0 +1,58 @@
+@font-face {
+    font-family: 'Questrial';
+    src: url('./fonts/Questrial/Questrial-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+body {
+  background: rgba(33,33,33,1);
+  background: -moz-linear-gradient(left, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 12%, rgba(33,33,33,1) 25%, rgba(41,41,41,1) 39%, rgba(46,46,46,1) 50%, rgba(46,46,46,1) 51%, rgba(41,41,41,1) 60%, rgba(33,33,33,1) 76%, rgba(33,33,33,1) 91%, rgba(33,33,33,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(33,33,33,1)), color-stop(12%, rgba(33,33,33,1)), color-stop(25%, rgba(33,33,33,1)), color-stop(39%, rgba(41,41,41,1)), color-stop(50%, rgba(46,46,46,1)), color-stop(51%, rgba(46,46,46,1)), color-stop(60%, rgba(41,41,41,1)), color-stop(76%, rgba(33,33,33,1)), color-stop(91%, rgba(33,33,33,1)), color-stop(100%, rgba(33,33,33,1)));
+  background: -webkit-linear-gradient(left, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 12%, rgba(33,33,33,1) 25%, rgba(41,41,41,1) 39%, rgba(46,46,46,1) 50%, rgba(46,46,46,1) 51%, rgba(41,41,41,1) 60%, rgba(33,33,33,1) 76%, rgba(33,33,33,1) 91%, rgba(33,33,33,1) 100%);
+  background: -o-linear-gradient(left, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 12%, rgba(33,33,33,1) 25%, rgba(41,41,41,1) 39%, rgba(46,46,46,1) 50%, rgba(46,46,46,1) 51%, rgba(41,41,41,1) 60%, rgba(33,33,33,1) 76%, rgba(33,33,33,1) 91%, rgba(33,33,33,1) 100%);
+  background: -ms-linear-gradient(left, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 12%, rgba(33,33,33,1) 25%, rgba(41,41,41,1) 39%, rgba(46,46,46,1) 50%, rgba(46,46,46,1) 51%, rgba(41,41,41,1) 60%, rgba(33,33,33,1) 76%, rgba(33,33,33,1) 91%, rgba(33,33,33,1) 100%);
+  background: linear-gradient(to right, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 12%, rgba(33,33,33,1) 25%, rgba(41,41,41,1) 39%, rgba(46,46,46,1) 50%, rgba(46,46,46,1) 51%, rgba(41,41,41,1) 60%, rgba(33,33,33,1) 76%, rgba(33,33,33,1) 91%, rgba(33,33,33,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#212121', endColorstr='#212121', GradientType=1 );
+
+    font-family: 'Questrial';
+    margin: 0px;
+    padding: 0px;
+  }
+  p{
+    color: @colorSecundaryText;
+    font-size: 22px;
+    text-align: center;
+    span{
+      color: @colorPrimaryText;
+      font-size: 26px;
+    }
+  }
+  .center-block{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .col-vertical-align{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 75px;
+  }
+  .text-green{
+    color: @simpleColorGreen;
+  }
+  .text-yellow{
+    color: @simpleColorYellow
+  }
+  .error-mid-mssg{
+    color: @colorError;
+    font-size: 18px;
+  }
+  .modal-title{
+    color: #6e0a0a;
+  }
+  .modal-message{
+    font-size: 18px;
+  }
