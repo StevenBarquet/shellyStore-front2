@@ -110,7 +110,7 @@ const FormOwnProducts = props => {
     uploadNewLaptop,
     refreshLaptops,
     formInitial,
-    editLaptop,
+    editService,
     isEdit
   } = props;
 
@@ -134,7 +134,7 @@ const FormOwnProducts = props => {
     // console.log('onFinish: ', values);
     setDisable(true);
     if (isEdit) {
-      editLaptop().then(() => refreshList(true));
+      editService().then(() => refreshList(true));
     } else {
       uploadNewLaptop().then(() => refreshList(false));
     }

@@ -47,7 +47,7 @@ const FormMercadoLibre = props => {
     uploadNewMercadoProduct,
     refreshLaptops,
     formInitial,
-    editLaptop,
+    editService,
     isEdit
   } = props;
 
@@ -70,7 +70,7 @@ const FormMercadoLibre = props => {
     // console.log('onFinish: ', values);
     setDisable(true);
     if (isEdit) {
-      editLaptop().then(() => refreshList(true));
+      editService().then(() => refreshList(true));
     } else {
       uploadNewMercadoProduct().then(() => refreshList(false));
     }
@@ -94,6 +94,8 @@ const FormMercadoLibre = props => {
         <Form
           initialValues={{
             ...formInitial,
+            idVendedor: formInitial.seller.idMercadoLibre,
+            nameVendedor: formInitial.seller.name,
             cover: formInitial.images.cover,
             mini: formInitial.images.mini,
             url1: formInitial.images.extra[0],

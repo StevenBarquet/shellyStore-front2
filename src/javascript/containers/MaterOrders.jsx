@@ -75,10 +75,6 @@ const MaterOrders = () => {
     });
   }
 
-  function onAddOwnProduct() {
-    setState({ ...state, window: 'FormOwnProducts' });
-  }
-
   function onCloseForm() {
     setState({
       ...state,

@@ -58,6 +58,17 @@ export async function updateLaptop(data) {
   }
 }
 
+export async function updateMLproduct(data) {
+  const endpoint = 'laptops/editar/otro';
+  const url = urlServer + endpoint;
+  try {
+    const respose = await axios.put(url, data);
+    return respose;
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function insertLaptop(data) {
   const endpoint = 'laptops/registrar';
   const url = urlServer + endpoint;

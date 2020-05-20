@@ -1,11 +1,15 @@
 // ---Dependencys
 import React, { useReducer, useEffect } from 'react';
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 // ---Components
 import AuthValidate from 'Comp/Master/AuthValidate';
 import AddProducts from 'Comp/Master/MasterProductos/AddProducts';
 import MasterListProduct from 'Comp/Master/MasterProductos/MasterListProduct';
 import FormOwnProducts from 'Comp/Master/MasterProductos/FormOwnProducts';
 import FormMercadoLibre from 'Comp/Master/MasterProductos/FormMercadoLibre';
+// ---Special
+import superMLhandler from 'Comp/Master/MasterProductos/superMLhandler';
 // Comons
 import LoadingScreen from 'CommonComps/LoadingScreen';
 import InvisibleButton from 'CommonComps/InvisibleButton';
@@ -16,8 +20,11 @@ import {
   getALLLaptops,
   getLaptop,
   deleteLaptop,
-  updateLaptop
+  updateLaptop,
+  updateMLproduct
 } from 'Others/peticiones';
+
+const { confirm } = Modal;
 
 const typesR = {
   SET_OBJECT: 'SET_OBJECT',
@@ -71,7 +78,6 @@ const MasterProductos = () => {
   function handleForm(obj, isML) {
     const { form } = state;
     const fixedObj = fixForm(obj, isML);
-    console.log('debugging...', fixedObj);
     dispatch({
       type: typesR.SET_OBJECT,
       payload: { form: { ...form, ...fixedObj } }
@@ -132,6 +138,29 @@ const MasterProductos = () => {
     return updateLaptop(state.form);
   }
 
+  function editMLproduct() {
+    return updateMLproduct(state.form);
+  }
+
+  function handleDelete(idString) {
+    deleteLaptop(idString).then(() => refreshLaptops());
+  }
+
+  function confirmDelete(idString) {
+    confirm({
+      title: <span className="modal-title">Confirmación</span>,
+      icon: <ExclamationCircleOutlined />,
+      content: <span className="modal-message">¿Quieres borrar la orden?</span>,
+      onOk() {
+        handleDelete(idString);
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      }
+    });
+  }
+
   function refreshLaptops() {
     dispatch({ type: typesR.IS_LOADING });
     getALLLaptops().then(response => {
@@ -149,20 +178,43 @@ const MasterProductos = () => {
     });
   }
 
-  function onAddMLProduct() {
+  function onChangeML(value) {
     dispatch({
       type: typesR.SET_OBJECT,
       payload: {
-        window: 'FormMercadoLibre',
-        form: {
-          origen: 'Mercado Libre',
-          seller: {},
-          images: {
-            extra: ['', '', '']
-          }
-        }
+        searchML: value
       }
     });
+  }
+
+  function onAddMLProduct() {
+    let initialForm = {
+      origen: 'Mercado Libre',
+      seller: {},
+      images: {
+        extra: ['', '', '']
+      }
+    };
+
+    const { searchML } = state;
+    if (searchML && searchML.length > 0) {
+      initialForm = superMLhandler(searchML);
+      dispatch({
+        type: typesR.SET_OBJECT,
+        payload: {
+          window: 'FormMercadoLibre',
+          form: initialForm
+        }
+      });
+    } else {
+      dispatch({
+        type: typesR.SET_OBJECT,
+        payload: {
+          window: 'FormMercadoLibre',
+          form: initialForm
+        }
+      });
+    }
   }
 
   function onCloseForm() {
@@ -170,56 +222,26 @@ const MasterProductos = () => {
   }
 
   const onOpenEditProduct = id => {
+    // Get the product data, clean de response and select de right form
     getLaptop(id).then(response => {
-      const {
-        _id,
-        costo,
-        detalles,
-        disponibles,
-        estetica,
-        categoria,
-        origen,
-        garantia,
-        images,
-        marca,
-        modelo,
-        os,
-        ports,
-        precio,
-        recomendacion,
-        rendimiento,
-        shortMicro,
-        special,
-        specs,
-        type
-      } = response.data;
+      const { data } = response;
+
+      const windowType = data.idMercadoLibre
+        ? 'FormMercadoLibre'
+        : 'FormOwnProducts';
+
+      const newResponse = data;
+      delete newResponse.date;
+      delete newResponse.__v;
+
       dispatch({
         type: typesR.SET_OBJECT,
         payload: {
           form: {
-            _id,
-            costo,
-            detalles,
-            disponibles,
-            estetica,
-            categoria,
-            origen,
-            garantia,
-            images,
-            marca,
-            modelo,
-            os,
-            ports,
-            precio,
-            recomendacion,
-            rendimiento,
-            shortMicro,
-            special,
-            specs,
-            type
+            ...newResponse
           },
           isEdit: true,
-          window: 'FormOwnProducts'
+          window: windowType
         }
       });
     });
@@ -242,7 +264,7 @@ const MasterProductos = () => {
               refreshLaptops={refreshLaptops}
               handleForm={handleForm}
               onCloseForm={onCloseForm}
-              editLaptop={editLaptop}
+              editService={editLaptop}
             />
             <InvisibleButton callback={onCloseForm} />
           </React.Fragment>
@@ -257,7 +279,7 @@ const MasterProductos = () => {
               refreshLaptops={refreshLaptops}
               handleForm={handleForm}
               onCloseForm={onCloseForm}
-              editLaptop={editLaptop}
+              editService={editMLproduct}
             />
             <InvisibleButton callback={onCloseForm} />
           </React.Fragment>
@@ -274,6 +296,7 @@ const MasterProductos = () => {
         <AddProducts
           onAddOwnProduct={onAddOwnProduct}
           onAddMLProduct={onAddMLProduct}
+          onChangeML={onChangeML}
         />
         {windowSwitch()}
         {state.loading ? (
@@ -281,7 +304,7 @@ const MasterProductos = () => {
         ) : (
           <MasterListProduct
             currentList={state.currentList}
-            onDeleteP={deleteLaptop}
+            onDeleteP={confirmDelete}
             refreshLaptops={refreshLaptops}
             onOpenEditProduct={onOpenEditProduct}
           />

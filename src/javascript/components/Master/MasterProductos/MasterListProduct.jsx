@@ -8,13 +8,11 @@ import { Button, Table } from 'antd';
 // import { getALLLaptops } from 'Others/peticiones';
 
 const MasterListProduct = props => {
-  const { currentList, onDeleteP, refreshLaptops, onOpenEditProduct } = props;
+  const { currentList, onDeleteP, onOpenEditProduct } = props;
   const dataSource = currentList;
 
   function handleDelete(e) {
-    onDeleteP(e.target.value).then(() => {
-      refreshLaptops();
-    });
+    onDeleteP(e.target.value);
   }
   const editOpen = e => {
     onOpenEditProduct(e.target.value);
