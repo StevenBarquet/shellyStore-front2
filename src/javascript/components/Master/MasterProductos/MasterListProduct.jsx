@@ -27,14 +27,19 @@ const MasterListProduct = props => {
       key: 'modelo'
     },
     {
-      title: 'Costo',
-      dataIndex: 'costo',
-      key: 'costo'
+      title: 'Precio',
+      dataIndex: 'precio',
+      key: 'precio'
     },
     {
       title: 'Disponibles',
       dataIndex: 'disponibles',
       key: 'disponibles'
+    },
+    {
+      title: 'Categoria',
+      dataIndex: 'categoria',
+      key: 'categoria'
     },
     {
       title: 'Delete',

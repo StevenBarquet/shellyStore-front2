@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const urlServer = 'http://68.183.203.255:4000/';
+// export const urlServer = 'http://68.183.203.255:4000/';
+export const urlServer = 'http://localhost:4000/';
 
 export async function getAllLaptopsPublic(data) {
   const endpoint = 'laptops/todos';
@@ -59,6 +60,17 @@ export async function updateLaptop(data) {
 
 export async function insertLaptop(data) {
   const endpoint = 'laptops/registrar';
+  const url = urlServer + endpoint;
+  try {
+    const respose = await axios.post(url, data);
+    return respose;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function insertMLproduct(data) {
+  const endpoint = 'laptops/registrar/otro';
   const url = urlServer + endpoint;
   try {
     const respose = await axios.post(url, data);
