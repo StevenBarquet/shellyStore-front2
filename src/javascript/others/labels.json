@@ -1,12 +1,30 @@
 {
   "title": {
     "main": "Shelly",
-    "sub": "store"
+    "sub": "store",
+    "shortStoreName": "Shelly"
   },
   "phoneStr": "55 3370 0670",
   "phoneMain": 5533700670,
-  "facebookUrl": "https://www.facebook.com/",
-  "contactLink": "https://www.facebook.com/",
+  "facebookUrl": "https://www.facebook.com/SHELLYstore.boot",
+  "contactLink": "http://m.me/SHELLYstore.boot",
   "instagramUrl": "https://www.instagram.com/",
-  "aclaracionPedido": "https://www.facebook.com/"
+  "aclaracionPedido": "https://www.facebook.com/",
+  "pagesData": {
+    "Home": {
+      "title": "Inicio"
+    },
+    "Productos": {
+      "title": "Productos"
+    },
+    "Rastreo": {
+      "title": "Rastreo"
+    },
+    "Orden": {
+      "title": "Ordenar pedido"
+    },
+    "SuccessOrder": {
+      "title": "Exitoso"
+    }    
+  }
 }

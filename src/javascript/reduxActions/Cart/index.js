@@ -32,23 +32,25 @@ export const emptyCart = () => dispatch => {
   });
 };
 
-export const updateOneInCart = (items, idString, value) => dispatch => {
-  console.log('entró updateOneInCart');
+export const updateOneInCart = (items, idString, updatedObj) => dispatch => {
   const idIndex = findIndexArrayObj(items, { id: idString });
   const currentCart = items;
-  currentCart[idIndex].piezas = value;
+  currentCart[idIndex] = { ...currentCart[idIndex], ...updatedObj };
+  console.log('entró updateOneInCart', currentCart[idIndex]);
   localStorage.setItem('cart', JSON.stringify(currentCart));
 
   dispatch({
     type: UPDATE_ONE,
     payload: currentCart
   });
+  return currentCart[idIndex];
 };
 
 export const deleteOneInCart = (items, idString) => dispatch => {
   console.log('entró deleteOneInCart');
   const idIndex = findIndexArrayObj(items, { id: idString });
   const currentCart = items;
+  const deletedItem = currentCart[idIndex];
   currentCart.splice(idIndex, 1); // Elimina 1 elemento del array en el index seleccionado
   localStorage.setItem('cart', JSON.stringify(currentCart));
 
@@ -56,6 +58,7 @@ export const deleteOneInCart = (items, idString) => dispatch => {
     type: DELETE_ONE,
     payload: currentCart
   });
+  return deletedItem;
 };
 
 export const startUpdateMiniCart = flag => dispatch => {

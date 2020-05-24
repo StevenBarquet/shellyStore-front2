@@ -1,6 +1,8 @@
 // ---Dependencys
 import React from 'react';
 import { Link } from 'react-router-dom';
+// ---Handle html headers
+import CustomHelmet from 'Comp/CustomHelmet';
 // ---Components
 import RoundCarousel from 'Comp/Home/RoundCarousel';
 import BuySteps from 'Comp/Home/BuySteps';
@@ -14,6 +16,7 @@ const { main, sub } = title;
 const Home = () => {
   return (
     <React.Fragment>
+      <CustomHelmet pageName="Home" />
       <div className="h-title">
         {main} <span>{sub}</span>
       </div>

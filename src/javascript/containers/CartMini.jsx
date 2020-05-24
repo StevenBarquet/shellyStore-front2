@@ -52,7 +52,8 @@ const CartMini = withRouter(props => {
 
   function updatePiezas(idString, value) {
     const { items } = state;
-    updateOneRedux(items, idString, value);
+    const piezas = { piezas: value };
+    updateOneRedux(items, idString, piezas);
   }
 
   function deleteItem(idString) {

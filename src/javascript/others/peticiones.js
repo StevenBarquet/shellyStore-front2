@@ -1,7 +1,16 @@
 import axios from 'axios';
 
-// export const urlServer = 'http://68.183.203.255:4000/';
-export const urlServer = 'http://localhost:4000/';
+export const urlServer = 'http://68.183.203.255:4000/';
+// export const urlServer = 'http://localhost:4000/';
+
+export async function genericGet(url) {
+  try {
+    const respose = await axios.get(url);
+    return respose;
+  } catch (error) {
+    return error;
+  }
+}
 
 export async function getAllLaptopsPublic(data) {
   const endpoint = 'laptops/todos';

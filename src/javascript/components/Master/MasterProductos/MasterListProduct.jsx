@@ -72,7 +72,14 @@ const MasterListProduct = props => {
   ];
   return (
     <React.Fragment>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table
+        pagination={{
+          current: 1,
+          pageSize: 100
+        }}
+        dataSource={dataSource}
+        columns={columns}
+      />
     </React.Fragment>
   );
 };

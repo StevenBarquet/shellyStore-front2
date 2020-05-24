@@ -188,7 +188,7 @@ const MasterProductos = () => {
   }
 
   function onAddMLProduct() {
-    let initialForm = {
+    const initialForm = {
       origen: 'Mercado Libre',
       seller: {},
       images: {
@@ -198,13 +198,14 @@ const MasterProductos = () => {
 
     const { searchML } = state;
     if (searchML && searchML.length > 0) {
-      initialForm = superMLhandler(searchML);
-      dispatch({
-        type: typesR.SET_OBJECT,
-        payload: {
-          window: 'FormMercadoLibre',
-          form: initialForm
-        }
+      superMLhandler(searchML).then(response => {
+        dispatch({
+          type: typesR.SET_OBJECT,
+          payload: {
+            window: 'FormMercadoLibre',
+            form: response
+          }
+        });
       });
     } else {
       dispatch({
@@ -244,6 +245,7 @@ const MasterProductos = () => {
           window: windowType
         }
       });
+      window.scrollTo(0, -100000);
     });
   };
 

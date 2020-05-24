@@ -2,6 +2,8 @@
 import React from 'react';
 import { Card, Row, Col, Form, Input, Tooltip, Select } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+// ---Others
+import { estadosMex } from 'Others/store-data.json';
 
 const { Option } = Select;
 
@@ -15,6 +17,8 @@ const opciones = [
     value: 'trabajo'
   }
 ];
+
+const estados = estadosMex;
 
 const mapOptions = options => {
   return options.map((element, i) => {
@@ -84,6 +88,21 @@ const ShipmentForm = props => {
               {...shortLabelItem}
               label={
                 <span>
+                  País&nbsp;
+                  <Tooltip title="Sólo disponible en México de momento">
+                    <QuestionCircleOutlined />
+                  </Tooltip>
+                </span>
+              }
+            >
+              <Input disabled value="México" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} lg={24}>
+            <Form.Item
+              {...shortLabelItem}
+              label={
+                <span>
                   Nombre&nbsp;
                   <Tooltip title="Persona que va a recibir">
                     <QuestionCircleOutlined />
@@ -119,7 +138,7 @@ const ShipmentForm = props => {
               help={estado.status === 'error' ? estado.message : null}
               rules={[{ required: true, message: estado.message }]}
             >
-              <Input />
+              <Select>{mapOptions(estados)}</Select>
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} lg={12}>

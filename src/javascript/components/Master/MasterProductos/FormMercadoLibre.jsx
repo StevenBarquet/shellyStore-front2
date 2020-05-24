@@ -72,7 +72,7 @@ const FormMercadoLibre = props => {
     if (isEdit) {
       editService().then(() => refreshList(true));
     } else {
-      uploadNewMercadoProduct().then(() => refreshList(false));
+      uploadNewMercadoProduct().then(() => refreshList(true));
     }
   }
 
@@ -94,8 +94,8 @@ const FormMercadoLibre = props => {
         <Form
           initialValues={{
             ...formInitial,
-            idVendedor: formInitial.seller.idMercadoLibre,
-            nameVendedor: formInitial.seller.name,
+            idVendedor: formInitial.seller.idMercadoLibre || '',
+            nameVendedor: formInitial.seller.name || '',
             cover: formInitial.images.cover,
             mini: formInitial.images.mini,
             url1: formInitial.images.extra[0],

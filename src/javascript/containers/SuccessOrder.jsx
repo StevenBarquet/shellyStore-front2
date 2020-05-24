@@ -1,6 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Spin } from 'antd';
+// ---Handle html headers
+import CustomHelmet from 'Comp/CustomHelmet';
 // others
 import { payOrden } from 'Others/peticiones';
 import { copyToEnd, copyFromOneIndexToOther } from 'Others/otherMethods';
@@ -74,24 +76,27 @@ const SuccessOrder = withRouter(props => {
     return { id, flag };
   }
   return (
-    <div className="success">
-      <h1>¡Gracias por tu compra!</h1>
-      <h2>
-        Orden: <span>{state.id}</span>
-      </h2>
-      <p>
-        En unos minutos te enviaremos a tu correo (revisar{' '}
-        <span>correos no deseados</span>) tu número de orden para que no lo
-        pierdas, con él le puedes dar seguimiento a tu pedido en el siguiente
-        enlace:
-        <br />
-        {state.loading ? (
-          <Spin />
-        ) : (
-          <Link to={`/rastreo?id:${state.id}`}>Rastrea tu pedido aquí</Link>
-        )}
-      </p>
-    </div>
+    <React.Fragment>
+      <CustomHelmet pageName="SuccessOrder" />
+      <div className="success">
+        <h1>¡Gracias por tu compra!</h1>
+        <h2>
+          Orden: <span>{state.id}</span>
+        </h2>
+        <p>
+          En unos minutos te enviaremos a tu correo (revisar{' '}
+          <span>correos no deseados</span>) tu número de orden para que no lo
+          pierdas, con él le puedes dar seguimiento a tu pedido en el siguiente
+          enlace:
+          <br />
+          {state.loading ? (
+            <Spin />
+          ) : (
+            <Link to={`/rastreo?id:${state.id}`}>Rastrea tu pedido aquí</Link>
+          )}
+        </p>
+      </div>
+    </React.Fragment>
   );
 });
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Row, Col } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
@@ -13,8 +13,40 @@ import { priceFormat } from 'Others/otherMethods';
 
 const PedidoList = props => {
   const { handleStep, items, confirmDelete, updatePiezas, total } = props;
+  const [state, setState] = useState({
+    freeShip: true,
+    envio: 0,
+    subtotal: total,
+    totalFinal: total,
+    restante: 0
+  });
 
-  const suma = total;
+  useEffect(() => {
+    setPrices();
+  }, [total]);
+
+  function setPrices() {
+    const restante = 1998 - total;
+    if (total < 1998) {
+      setState({
+        ...state,
+        freeShip: false,
+        envio: 198,
+        subtotal: total,
+        totalFinal: total + 198,
+        restante
+      });
+    } else {
+      setState({
+        ...state,
+        freeShip: true,
+        envio: 0,
+        subtotal: total,
+        totalFinal: total,
+        restante: 0
+      });
+    }
+  }
 
   if (!items || items.length === 0) {
     return <h4>No tienes productos en tu carrito</h4>;
@@ -33,13 +65,33 @@ const PedidoList = props => {
       </Row>
       <Row>
         <div className="cart-total-container">
+          <Row className="cart-total-sub">
+            <Col md={6}>
+              <div className="col-vertical-align">envio: </div>
+            </Col>
+            <Col offset={6} md={6}>
+              <div className="col-vertical-align">
+                <p>{priceFormat(state.envio)}</p>
+              </div>
+            </Col>
+          </Row>
+          <Row className="cart-total-sub">
+            <Col md={6}>
+              <div className="col-vertical-align">subtotal: </div>
+            </Col>
+            <Col offset={6} md={6}>
+              <div className="col-vertical-align">
+                <p>{priceFormat(state.subtotal)}</p>
+              </div>
+            </Col>
+          </Row>
           <Row>
             <Col md={6}>
               <div className="col-vertical-align">Total: </div>
             </Col>
             <Col offset={6} md={6}>
               <div className="col-vertical-align">
-                <p>{priceFormat(suma)}</p>
+                <p>{priceFormat(state.totalFinal)}</p>
               </div>
             </Col>
             <Col md={6}>
@@ -55,6 +107,15 @@ const PedidoList = props => {
               </div>
             </Col>
           </Row>
+          {!state.freeShip && (
+            <Row className="cart-total-nota">
+              <div>
+                Pssst... solo te faltan{' '}
+                <span>{priceFormat(state.restante)}</span> en tu carrito para
+                que tu envío sea <span>gratis</span> :D
+              </div>
+            </Row>
+          )}
         </div>
       </Row>
     </React.Fragment>

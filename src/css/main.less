@@ -189,6 +189,13 @@
   text-align: right;
   margin: 10px;
   font-size: 19px;
+  &-promo{
+    text-decoration: line-through;
+    color: @color_darkSemiLigth;
+    text-align: right;
+    margin: 10px;
+    font-size: 19px;
+  }
 }
 .search-item-left{
   color: rgb(184, 49, 161);
@@ -442,6 +449,12 @@
   font-size: 18px;
   margin: 8px;
   border-bottom: 1px solid @color_primary;
+  a{
+    color: @colorDarkLigth;
+    &:hover{
+      color: @colorThree
+    }
+  }
 }
 .cart-images-big{
   margin: 4px auto 4px auto;
@@ -464,6 +477,29 @@
     color: @color_lightText;
   }
 }
+.cart-total-sub{
+  color: @colorSecundaryTextLigth;
+  font-size: 19px;
+  height: 45px;
+  p{
+    font-size: 20px;
+  }
+}
+.cart-total-nota{
+  div{
+    text-align: center;
+    width: 100%;
+    margin-top: 15px;
+    color: @colorPrimaryText;
+    font-size: 20px;
+    span{
+      color: @colorPrimary;
+      font-size: 23px;
+      margin: 0px 3px 0px 3px;
+    }
+  }
+}
+
 .pedido-selction{
   color: #ffffff;
   font-size: 22px;
@@ -536,6 +572,14 @@
     margin-top: 10px;
   }
 }
+.cart-modal{
+  h2{
+    font-size: 18px;
+    color: @colorSuccess;
+    margin: 10px 0px 20px 0px;
+  }
+}
+
 //-----------------------------------------------------RASTREO----------------------------------------------------
 .rastreo-container{
   width: 100%;
@@ -619,7 +663,74 @@
   justify-content: center;
   align-items: center;
 }
-
+//-----------------------------------------------------PAGE 404----------------------------------------------------
+.page404-container{
+  background-color: #ffffff;
+  min-height: 84vh;
+  padding: 45px;
+  //---Rigth Panel
+  h3{
+    font-size: 30px;
+    border-left: 8px solid @colorPrimary;
+    margin-top: 20px;
+    padding-left: 10px;
+    span{
+      color: @colorPrimary;
+      font-weight: bold;
+      font-size: 34px;
+    }
+  }
+  //---Left Panel
+  h1{
+    text-align: center;
+    font-weight: bold;
+    color: @colorPrimary;
+    font-size: 60px;
+    letter-spacing: 1px;
+  }
+  p{
+    color: @colorDark;
+    height: 50px;
+    width: 100%;
+    margin-top: 50px;
+  }
+}
+.page404-button{
+  background-color:  @colorPrimary;
+  margin: 130px auto 35px auto;
+  width: 350px;
+  height: 75px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  h2{
+    margin-top: 15px;
+    color: @colorPrimaryText;
+    font-size: 38px;
+    span{
+      font-size: 20px;
+    }
+    svg{
+      font-size: 45px;
+      position: relative;
+      bottom: -12px;
+      left: 10px;
+    }
+  }
+  &:hover{
+    background-color: @colorPrimaryLigth;
+    box-shadow: 1px 1px 20px rgba(150,150,150,.2);
+    margin: 128.5px auto 35px auto;
+    cursor: pointer;
+  }
+  &:focus {
+    outline: 0;
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+}
 
 
 //-------------------------------------------------MASTER----------------------------------------------

@@ -2,6 +2,8 @@ import React, { useEffect, useReducer } from 'react';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
+// ---Handle html headers
+import CustomHelmet from 'Comp/CustomHelmet';
 // Components
 import CartSteps from 'Comp/Orden/CartSteps';
 import PedidoList from 'Comp/Orden/PedidoList';
@@ -10,6 +12,7 @@ import PedidoDom from 'Comp/Orden/PedidoDom';
 import PedidoPago from 'Comp/Orden/PedidoPago';
 // Comons
 import LoadingScreen from 'CommonComps/LoadingScreen';
+import ModalNotification from 'CommonComps/ModalNotification';
 // Otros
 import { insertOrden } from 'Others/peticiones';
 import {
@@ -109,6 +112,7 @@ function reducerOrden(state, action) {
   }
 }
 
+// ------------------------------------------ COMPONENT-----------------------------------------
 const Orden = withRouter(props => {
   const {
     deleteOneRedux,
@@ -298,39 +302,19 @@ const Orden = withRouter(props => {
     // si los forms pasan la validación se hace el request
     if (validateContact.isValid && validateShipment.isValid) {
       dispatch({ type: typesR.SET_LOADING, payload: true });
-      const newItems = state.items.map(item => ({
-        _id: item._id,
-        piezas: item.piezas
-      }));
 
-      insertOrden({
-        items: newItems,
-        envioTipo: state.envioTipo,
-        correo: state.correo,
-        telefono: state.telefono,
-        nombre: state.nombre,
-        estatus: state.estatus,
-        apellido: state.apellido,
-        domicilio: state.domicilio,
-        pagoTipo: state.pagoTipo
-      })
+      const reqBody = setBodyForRequest();
+
+      insertOrden(reqBody)
         .then(response => {
-          const { data } = response;
-          const { VALIDATE_FORMS, FINISH_ONLINE_ORDER, SET_LOADING } = typesR;
-          dispatch({ type: SET_LOADING, payload: false });
-          if (data.status === 'success' && state.pagoTipo === 'online') {
-            dispatch({
-              type: VALIDATE_FORMS,
-              payload: {
-                contactFormValidation: validateContact.errorStructure,
-                isValidContact: validateContact.isValid,
-                shipmentFormValidation: validateShipment.errorStructure,
-                isValidShipment: validateShipment.isValid
-              }
-            });
-            dispatch({ type: FINISH_ONLINE_ORDER, payload: data.idPreference });
+          dispatch({ type: typesR.SET_LOADING, payload: false });
+
+          if (response.response) {
+            // si hay un bad request
+            handleErrorInsertOrden(response.response);
           } else {
-            history.push('/success=pending=' + data.orderID);
+            const { data } = response;
+            handleSuccessInsertOrden(data, validateContact, validateShipment);
           }
         })
         .catch(err => {
@@ -349,18 +333,116 @@ const Orden = withRouter(props => {
     }
   }
 
+  function setBodyForRequest() {
+    const newItems = state.items.map(item => ({
+      _id: item._id,
+      piezas: item.piezas
+    }));
+
+    return {
+      items: newItems,
+      envioTipo: state.envioTipo,
+      correo: state.correo,
+      telefono: state.telefono,
+      nombre: state.nombre,
+      estatus: state.estatus,
+      apellido: state.apellido,
+      domicilio: state.domicilio,
+      pagoTipo: state.pagoTipo
+    };
+  }
+
+  function handleSuccessInsertOrden(data, validateContact, validateShipment) {
+    const { VALIDATE_FORMS, FINISH_ONLINE_ORDER } = typesR;
+    if (data.status === 'success' && state.pagoTipo === 'online') {
+      dispatch({
+        type: VALIDATE_FORMS,
+        payload: {
+          contactFormValidation: validateContact.errorStructure,
+          isValidContact: validateContact.isValid,
+          shipmentFormValidation: validateShipment.errorStructure,
+          isValidShipment: validateShipment.isValid
+        }
+      });
+      dispatch({ type: FINISH_ONLINE_ORDER, payload: data.idPreference });
+    } else {
+      history.push('/success=pending=' + data.orderID);
+    }
+  }
+
+  function handleErrorInsertOrden(res) {
+    const { data } = res;
+    if (data.error && data.error === 'Hay productos no validos en la lista') {
+      console.log('handleErrorInsertOrden', data);
+      HandleErrorInCart(data.products);
+    } else {
+      console.log('Otro error sin manejar en InsertOrden');
+    }
+  }
+
+  function HandleErrorInCart(productList) {
+    const deleted = [];
+    const updated = [];
+    productList.forEach(item => {
+      const { invalidProduct, someProduct } = item;
+      const { errorType, piezas, disponibles, _id } = someProduct;
+      if (invalidProduct) {
+        if (errorType === 'inventario' && piezas && piezas > disponibles) {
+          const fixPiezas = { piezas: disponibles };
+          const updatedItem = updateOneRedux(state.items, _id, fixPiezas);
+          updated.push(updatedItem);
+        } else {
+          const deletedItem = deleteOneRedux(state.items, _id);
+          deleted.push(deletedItem);
+        }
+      }
+    });
+    updatedMiniCartRedux(false);
+    dispatch({ type: typesR.CHANGE_STEP, payload: 0 });
+    ModalNotification(
+      9000,
+      'Productos no válidos',
+      buildModalMessage(updated, deleted)
+    );
+  }
+
+  function buildModalMessage(updated, deleted) {
+    return (
+      <div className="cart-modal">
+        <h2>
+          Se modifico tu carrito porque tenías productos no disponibles en este
+          momento
+        </h2>
+        {deleted.length > 0 && (
+          <div>
+            <h3>Los siguientes productos se eliminaron:</h3>
+            <ul>
+              {deleted.map(item => (
+                <li>{item.title}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {updated.length > 0 && (
+          <div>
+            <h3>Reducción de piezas para los siguientes productos:</h3>
+            <ul>
+              {updated.map(item => (
+                <li>{item.title}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   function setEnvio(envioTipo) {
     dispatch({ type: typesR.SET_ENVIO, payload: envioTipo });
   }
 
   function setPagoType(pagoTipo) {
     dispatch({ type: typesR.SET_PAGO, payload: pagoTipo });
-    // checando si jala el servicio verificador de productos
-    // const newItems = reduxCart.items.map(item => ({
-    //   _id: item._id,
-    //   piezas: item.piezas
-    // }));
-    // checkItems({ items: newItems }).then(res => console.log('checkItems: ', res));
   }
 
   function deleteItem(idString) {
@@ -370,9 +452,10 @@ const Orden = withRouter(props => {
   }
 
   function updatePiezas(idString, value) {
+    const piezas = { piezas: value };
     const { items } = state;
     updatedMiniCartRedux(false);
-    updateOneRedux(items, idString, value);
+    updateOneRedux(items, idString, piezas);
   }
 
   function confirmDelete(idString) {
@@ -456,10 +539,13 @@ const Orden = withRouter(props => {
     }
   };
   return (
-    <div className="orden-container">
-      <CartSteps step={state.step} />
-      {state.loading || state.finishStep ? <LoadingScreen /> : mapSteps()}
-    </div>
+    <React.Fragment>
+      <CustomHelmet pageName="Orden" />
+      <div className="orden-container">
+        <CartSteps step={state.step} />
+        {state.loading || state.finishStep ? <LoadingScreen /> : mapSteps()}
+      </div>
+    </React.Fragment>
   );
 });
 

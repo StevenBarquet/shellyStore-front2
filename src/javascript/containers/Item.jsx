@@ -1,25 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Modal } from 'antd';
+import { Row, Col, Modal } from 'antd';
 import { withRouter } from 'react-router-dom';
 
 // Comp
 import ProductImages from 'Comp/Item/ProductImages';
 import ProdDetails from 'Comp/Item/ProdDetails';
-import ProdSpecs from 'Comp/Item/ProdSpecs';
 
 // CommonComps
 import LoadingScreen from 'CommonComps/LoadingScreen';
 
 // Others
 import { copyToEnd, findIndexArrayObj } from 'Others/otherMethods';
-import { contactLink } from 'Others/labels.json';
 
 // Functions
 import { getLaptopPublic } from 'Others/peticiones';
 import { connect } from 'react-redux';
 // Actions from redux
 import { getCart, startUpdating, startUpdateMiniCart } from 'Actions/Cart';
+import FullSpecsCard from '../components/Item/FullSpecsCard';
 
 const Item = withRouter(props => {
   const [product, setProduct] = useState(null);
@@ -39,9 +38,17 @@ const Item = withRouter(props => {
   const onGetData = () => {
     const current = props.location.pathname;
     const id = copyToEnd(current, 6);
-    getLaptopPublic(id).then(response => {
-      setProduct({ ...response.data, piezas: 1 });
-    });
+    getLaptopPublic(id)
+      .then(response => {
+        if (response.response) {
+          props.history.push('/error-404');
+        }
+        setProduct({ ...response.data, piezas: 1 });
+      })
+      .catch(err => {
+        props.history.push('/error-404');
+        console.log('error ???? : ', err);
+      });
   };
 
   const getPiezas = obj => {
@@ -122,44 +129,7 @@ const Item = withRouter(props => {
         </Col>
       </Row>
       <Row>
-        <Card className="specs-card">
-          <Row>
-            <Col offset={1} xl={11}>
-              <ProdSpecs
-                title="Características de rendimiento "
-                tooltip="La velocidad y rendimiento de tu equipo depende de éstas características"
-                text={product.rendimiento}
-              />
-            </Col>
-            <Col offset={1} xl={11}>
-              <ProdSpecs
-                title="Características generales"
-                text={product.specs}
-              />
-            </Col>
-            <Col offset={1} xl={11}>
-              <ProdSpecs title="Puertos" text={product.ports} />
-            </Col>
-            <Col offset={1} xl={11}>
-              {' '}
-              {product.special && product.special !== '' && (
-                <ProdSpecs
-                  title="Características especiales"
-                  tooltip="Algunas características sobresalientes acerca de éste equipo"
-                  text={product.special}
-                />
-              )}
-            </Col>
-          </Row>
-          <Row>
-            <p>
-              ¿Tienes dudas o necesitas orientación? Mensaje{' '}
-              <a href={contactLink} target="_blank" rel="noopener noreferrer">
-                aquí :D
-              </a>
-            </p>
-          </Row>
-        </Card>
+        <FullSpecsCard product={product} />
       </Row>
     </div>
   );

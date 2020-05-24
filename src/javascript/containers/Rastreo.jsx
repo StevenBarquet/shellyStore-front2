@@ -8,6 +8,8 @@ import {
   CarFilled,
   CheckCircleFilled
 } from '@ant-design/icons';
+// ---Handle html headers
+import CustomHelmet from 'Comp/CustomHelmet';
 // Comp
 import Step from 'Comp/Rastreo/Step';
 import Busqueda from 'Comp/Rastreo/Busqueda';
@@ -21,7 +23,7 @@ import {
   getStringKey,
   copyFromOneIndexToOther
 } from 'Others/otherMethods';
-import { aclaracionPedido } from 'Others/labels.json';
+import { contactLink } from 'Others/labels.json';
 import { getOrder } from 'Others/peticiones';
 
 const steps = [
@@ -259,24 +261,23 @@ const Rastreo = withRouter(props => {
   }
 
   return (
-    <div className="rastreo-container">
-      <Busqueda />
-      <Row>{renderSwitch()}</Row>
-      {state.route !== '' && (
-        <Row>
-          <h3>
-            ¿Dudas?{' '}
-            <a
-              href={aclaracionPedido}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              envíanos mensaje aquí
-            </a>
-          </h3>
-        </Row>
-      )}
-    </div>
+    <React.Fragment>
+      <CustomHelmet pageName="Rastreo" />
+      <div className="rastreo-container">
+        <Busqueda />
+        <Row>{renderSwitch()}</Row>
+        {state.route !== '' && (
+          <Row>
+            <h3>
+              ¿Dudas?{' '}
+              <a href={contactLink} rel="noopener noreferrer" target="_blank">
+                envíanos mensaje aquí
+              </a>
+            </h3>
+          </Row>
+        )}
+      </div>
+    </React.Fragment>
   );
 });
 

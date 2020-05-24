@@ -16,6 +16,8 @@ import MaterOrders from 'Cont/MaterOrders';
 import MasterProductos from 'Cont/MasterProductos';
 import SuccessOrder from 'Cont/SuccessOrder';
 import Rastreo from 'Cont/Rastreo';
+import Ups404 from 'Cont/Ups404';
+import GoTo404 from 'Cont/GoTo404';
 // ------------------------------------------ COMPONENT-----------------------------------------
 const AppContainer = () => {
   return (
@@ -34,6 +36,8 @@ const AppContainer = () => {
         <Route exact path="/master" component={AuthValidate} />
         <Route exact path="/master/productos" component={MasterProductos} />
         <Route exact path="/master/ordenes" component={MaterOrders} />
+        <Route exact path="/error-404" component={Ups404} />
+        <Route exact path="*" component={GoTo404} />
       </Switch>
       <Footer />
     </BrowserRouter>

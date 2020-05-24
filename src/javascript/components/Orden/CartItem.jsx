@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'antd';
+import { Link } from 'react-router-dom';
 import { CloseOutlined } from '@ant-design/icons';
 // components
 import PiezasForm from 'Comp/Orden/PiezasForm';
@@ -16,7 +17,9 @@ const CartItem = props => {
   return (
     <div className="buy-item-container">
       <Row>
-        <div className="buy-item-header">{item.title}</div>
+        <div className="buy-item-header">
+          <Link to={'/item=' + _id}>{title}</Link>
+        </div>
       </Row>
       <Row>
         <Col xs={24} sm={24} lg={6}>
