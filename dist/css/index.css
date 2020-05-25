@@ -27910,6 +27910,13 @@ div.ant-typography-edit-content.ant-typography-rtl {
   margin: 10px;
   font-size: 19px;
 }
+.search-item-price-promo {
+  text-decoration: line-through;
+  color: rgba(10, 10, 10, 0.6);
+  text-align: right;
+  margin: 10px;
+  font-size: 19px;
+}
 .search-item-left {
   color: #b831a1;
   font-size: 19px;
@@ -28064,19 +28071,6 @@ div.ant-typography-edit-content.ant-typography-rtl {
   background: linear-gradient(to right, #212121 0%, #212121 12%, #212121 25%, #292929 39%, #2e2e2e 50%, #2e2e2e 51%, #292929 60%, #212121 76%, #212121 91%, #212121 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#212121', endColorstr='#212121', GradientType=1);
 }
-.close-transparent {
-  z-index: 1;
-  background-color: rgba(10, 10, 10, 0.2);
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-}
-.close-transparent:hover {
-  background-color: rgba(59, 59, 59, 0.2);
-  cursor: pointer;
-}
 .mini-cart-list-container {
   overflow-y: scroll;
   overflow-x: hidden;
@@ -28166,6 +28160,12 @@ div.ant-typography-edit-content.ant-typography-rtl {
   margin: 8px;
   border-bottom: 1px solid #fab624;
 }
+.buy-item-header a {
+  color: #6e6d6d;
+}
+.buy-item-header a:hover {
+  color: #fab624;
+}
 .cart-images-big {
   margin: 4px auto 4px auto;
   display: flex;
@@ -28186,6 +28186,26 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .cart-total-container p {
   font-size: 22px;
   color: #ffffff;
+}
+.cart-total-sub {
+  color: #dddddd;
+  font-size: 19px;
+  height: 45px;
+}
+.cart-total-sub p {
+  font-size: 20px;
+}
+.cart-total-nota div {
+  text-align: center;
+  width: 100%;
+  margin-top: 15px;
+  color: #ffffff;
+  font-size: 20px;
+}
+.cart-total-nota div span {
+  color: #c221af;
+  font-size: 23px;
+  margin: 0px 3px 0px 3px;
 }
 .pedido-selction {
   color: #ffffff;
@@ -28254,6 +28274,11 @@ div.ant-typography-edit-content.ant-typography-rtl {
   font-size: 18px;
   color: #687079;
   margin-top: 10px;
+}
+.cart-modal h2 {
+  font-size: 18px;
+  color: #3ab415;
+  margin: 10px 0px 20px 0px;
 }
 .rastreo-container {
   width: 100%;
@@ -28338,6 +28363,71 @@ div.ant-typography-edit-content.ant-typography-rtl {
   justify-content: center;
   align-items: center;
 }
+.page404-container {
+  background-color: #ffffff;
+  min-height: 84vh;
+  padding: 45px;
+}
+.page404-container h3 {
+  font-size: 30px;
+  border-left: 8px solid #c221af;
+  margin-top: 20px;
+  padding-left: 10px;
+}
+.page404-container h3 span {
+  color: #c221af;
+  font-weight: bold;
+  font-size: 34px;
+}
+.page404-container h1 {
+  text-align: center;
+  font-weight: bold;
+  color: #c221af;
+  font-size: 60px;
+  letter-spacing: 1px;
+}
+.page404-container p {
+  color: #474747;
+  height: 50px;
+  width: 100%;
+  margin-top: 50px;
+}
+.page404-button {
+  background-color: #c221af;
+  margin: 130px auto 35px auto;
+  width: 350px;
+  height: 75px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.page404-button h2 {
+  margin-top: 15px;
+  color: #ffffff;
+  font-size: 38px;
+}
+.page404-button h2 span {
+  font-size: 20px;
+}
+.page404-button h2 svg {
+  font-size: 45px;
+  position: relative;
+  bottom: -12px;
+  left: 10px;
+}
+.page404-button:hover {
+  background-color: #e45ebc;
+  box-shadow: 1px 1px 20px rgba(150, 150, 150, 0.2);
+  margin: 128.5px auto 35px auto;
+  cursor: pointer;
+}
+.page404-button:focus {
+  outline: 0;
+}
+.page404-button:active {
+  transform: scale(0.9);
+}
 .login-cont {
   width: 70%;
   margin: 150px auto 0px auto;
@@ -28379,11 +28469,8 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .new-prod {
   position: absolute;
   top: 80px;
-  left: 0px;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  text-align: center;
+  left: 10%;
+  width: 80%;
   z-index: 2;
 }
 .ant-carousel .slick-slide {
@@ -28671,5 +28758,18 @@ input[type="reset"] {
 }
 .btn-mlg-block:active {
   transform: scale(1);
+}
+.invisible-button {
+  z-index: 1;
+  background-color: rgba(10, 10, 10, 0.2);
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+.invisible-button:hover {
+  background-color: rgba(59, 59, 59, 0.2);
+  cursor: pointer;
 }
 

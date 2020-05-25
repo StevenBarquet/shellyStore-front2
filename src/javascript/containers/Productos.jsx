@@ -1,5 +1,6 @@
 // ---Dependencys
 import React, { useReducer, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import {
   LaptopOutlined,
   DeploymentUnitOutlined,
@@ -78,15 +79,24 @@ function reducerProductos(state, action) {
   }
 }
 
-const Productos = () => {
+const Productos = withRouter(props => {
   const [state, dispatch] = useReducer(reducerProductos, {
     currentList: [],
-    loading: true
+    loading: true,
+    activeKey: '1'
   });
 
   useEffect(() => {
-    onLoadLaptops(setCategory('1'));
-  }, []);
+    handleUrlKey();
+  }, [props.location.search, props.location.pathname]);
+
+  function handleUrlKey() {
+    const keyParam = props.location.search;
+    const key = keyParam === '' ? '1' : keyParam[1];
+
+    onLoadLaptops(setCategory(key));
+    dispatch({ type: typesR.SET_DATA, payload: { activeKey: key } });
+  }
 
   function setCategory(tabIndex) {
     const index = parseInt(tabIndex) - 1;
@@ -113,8 +123,7 @@ const Productos = () => {
   }
 
   function getTabProducts(key) {
-    // console.log('callback tab: ', key);
-    onLoadLaptops(setCategory(key));
+    props.history.push('/productos?' + key);
   }
 
   function handleProduct() {
@@ -133,7 +142,7 @@ const Productos = () => {
     <React.Fragment>
       <CustomHelmet pageName="Productos" />
       <div className="products-cont">
-        <Tabs defaultActiveKey="1" onChange={getTabProducts}>
+        <Tabs activeKey={state.activeKey} onChange={getTabProducts}>
           {tabTitles.map((unUsed, index) => (
             <TabPane tab={tabTitles[index]} key={`${index + 1}`}>
               {handleProduct()}
@@ -143,6 +152,6 @@ const Productos = () => {
       </div>
     </React.Fragment>
   );
-};
+});
 
 export default Productos;
