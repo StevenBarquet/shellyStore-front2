@@ -150,7 +150,7 @@ const MasterProductos = () => {
     confirm({
       title: <span className="modal-title">Confirmación</span>,
       icon: <ExclamationCircleOutlined />,
-      content: <span className="modal-message">¿Quieres borrar la orden?</span>,
+      content: <span className="modal-message">¿Quieres borrar el producto?</span>,
       onOk() {
         handleDelete(idString);
         console.log('OK');

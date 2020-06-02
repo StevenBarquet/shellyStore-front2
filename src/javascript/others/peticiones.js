@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const urlServer = 'http://68.183.203.255:4000/';
+export const urlServer = 'https://shellyboost.com:4000/';
 // export const urlServer = 'http://localhost:4000/';
 
 export async function genericGet(url) {

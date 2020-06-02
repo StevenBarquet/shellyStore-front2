@@ -82,14 +82,14 @@ function getIDfromLink(cadena) {
 
 function getItemValues(data) {
   // eslint-disable-next-line prettier/prettier
-  const { title, price, available_quantity, warranty, thumbnail, id, permalink, pictures } = data;
+  const { title, price, available_quantity, warranty, secure_thumbnail, id, permalink, pictures } = data;
   const itemValues = {
     marca: title,
     costo: price,
-    precio: (parseFloat(price) * 1.12 + 5).toFixed(2),
+    precio: (parseFloat(price) * 1.15 + 5).toFixed(2),
     disponibles: available_quantity,
     garantia: warranty,
-    images: handleImages(pictures, thumbnail),
+    images: handleImages(pictures, secure_thumbnail),
     idMercadoLibre: id,
     mlURL: permalink
   };
@@ -100,30 +100,46 @@ function getItemValues(data) {
 function handleImages(pictures, mini) {
   if (pictures.length >= 4) {
     return {
-      cover: pictures[0].url,
+      cover: pictures[0].secure_url,
       mini,
-      extra: [pictures[1].url, pictures[2].url, pictures[3].url]
+      extra: [
+        pictures[1].secure_url,
+        pictures[2].secure_url,
+        pictures[3].secure_url
+      ]
     };
   }
   if (pictures.length === 3) {
     return {
-      cover: pictures[0].url,
+      cover: pictures[0].secure_url,
       mini,
-      extra: [pictures[1].url, pictures[2].url, pictures[0].url]
+      extra: [
+        pictures[1].secure_url,
+        pictures[2].secure_url,
+        pictures[0].secure_url
+      ]
     };
   }
   if (pictures.length === 2) {
     return {
-      cover: pictures[0].url,
+      cover: pictures[0].secure_url,
       mini,
-      extra: [pictures[1].url, pictures[1].url, pictures[1].url]
+      extra: [
+        pictures[1].secure_url,
+        pictures[1].secure_url,
+        pictures[1].secure_url
+      ]
     };
   }
   if (pictures.length === 1) {
     return {
-      cover: pictures[0].url,
+      cover: pictures[0].secure_url,
       mini,
-      extra: [pictures[0].url, pictures[0].url, pictures[0].url]
+      extra: [
+        pictures[0].secure_url,
+        pictures[0].secure_url,
+        pictures[0].secure_url
+      ]
     };
   }
 }

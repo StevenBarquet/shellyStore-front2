@@ -22,8 +22,10 @@ const Login = withRouter(props => {
 
   function onFinish(values) {
     if (
-      values.qJJqEF6kuu4dC7Fw === 'botz' &&
-      values.x2BwXvQkubLmm3gK === 'comic456'
+      (values.qJJqEF6kuu4dC7Fw === 'botz' &&
+        values.x2BwXvQkubLmm3gK === 'comic456') ||
+      (values.qJJqEF6kuu4dC7Fw === 'alina' &&
+        values.x2BwXvQkubLmm3gK === 'coco')
     ) {
       setDisable(false);
       onLogin();

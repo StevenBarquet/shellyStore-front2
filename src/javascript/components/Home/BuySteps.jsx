@@ -38,7 +38,7 @@ const BuySteps = () => {
         />
         <Step
           status="finish"
-          title="Entraga"
+          title="Entrega"
           description="Recibe el producto :)"
           icon={<InboxOutlined />}
         />

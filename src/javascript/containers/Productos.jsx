@@ -118,7 +118,7 @@ const Productos = withRouter(props => {
       })
       .catch(err => {
         dispatch({ type: typesR.STOP_LOADING });
-        console.log('onLoadLaptops ', err);
+        console.log('onLoadLaptops ----->', err);
       });
   }
 
@@ -131,7 +131,12 @@ const Productos = withRouter(props => {
     if (loading) {
       return <LoadingScreen />;
     }
-    if (currentList.length === 0) {
+    if (!currentList) {
+      return (
+        <p>Servidor en mantenimiento o error en tu conexión de internet</p>
+      );
+    }
+    if (currentList && currentList.length === 0) {
       return <p>No se encontraron productos en esa categoria</p>;
     }
     return <MapProduct currentList={currentList} />;
