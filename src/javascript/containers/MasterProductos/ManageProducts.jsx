@@ -3,11 +3,10 @@ import React, { useReducer, useEffect } from 'react';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 // ---Components
-import AuthValidate from 'Comp/Master/AuthValidate';
-import AddProducts from 'Comp/Master/MasterProductos/AddProducts';
-import MasterListProduct from 'Comp/Master/MasterProductos/MasterListProduct';
-import FormOwnProducts from 'Comp/Master/MasterProductos/FormOwnProducts';
-import FormMercadoLibre from 'Comp/Master/MasterProductos/FormMercadoLibre';
+import AddProducts from 'Comp/Master/MasterProductos/ManageProducts/AddProducts';
+import MasterListProduct from 'Comp/Master/MasterProductos/ManageProducts/MasterListProduct';
+import FormOwnProducts from 'Comp/Master/MasterProductos/ManageProducts/FormOwnProducts';
+import FormMercadoLibre from 'Comp/Master/MasterProductos/ManageProducts/FormMercadoLibre';
 // ---Special
 import superMLhandler from 'Comp/Master/MasterProductos/superMLhandler';
 // Comons
@@ -59,7 +58,7 @@ function reducerMaterOrders(state, action) {
 }
 
 // ------------------------------------------ COMPONENT-----------------------------------------
-const MasterProductos = () => {
+const ManageProducts = () => {
   const [state, dispatch] = useReducer(reducerMaterOrders, {
     window: 'none',
     currentList: [],
@@ -150,7 +149,9 @@ const MasterProductos = () => {
     confirm({
       title: <span className="modal-title">Confirmación</span>,
       icon: <ExclamationCircleOutlined />,
-      content: <span className="modal-message">¿Quieres borrar el producto?</span>,
+      content: (
+        <span className="modal-message">¿Quieres borrar el producto?</span>
+      ),
       onOk() {
         handleDelete(idString);
         console.log('OK');
@@ -293,27 +294,25 @@ const MasterProductos = () => {
     }
   }
   return (
-    <AuthValidate>
-      <div className="master-product-container">
-        <AddProducts
-          onAddOwnProduct={onAddOwnProduct}
-          onAddMLProduct={onAddMLProduct}
-          onChangeML={onChangeML}
+    <div className="master-product-container">
+      <AddProducts
+        onAddOwnProduct={onAddOwnProduct}
+        onAddMLProduct={onAddMLProduct}
+        onChangeML={onChangeML}
+      />
+      {windowSwitch()}
+      {state.loading ? (
+        <LoadingScreen />
+      ) : (
+        <MasterListProduct
+          currentList={state.currentList}
+          onDeleteP={confirmDelete}
+          refreshLaptops={refreshLaptops}
+          onOpenEditProduct={onOpenEditProduct}
         />
-        {windowSwitch()}
-        {state.loading ? (
-          <LoadingScreen />
-        ) : (
-          <MasterListProduct
-            currentList={state.currentList}
-            onDeleteP={confirmDelete}
-            refreshLaptops={refreshLaptops}
-            onOpenEditProduct={onOpenEditProduct}
-          />
-        )}
-      </div>
-    </AuthValidate>
+      )}
+    </div>
   );
 };
 
-export default MasterProductos;
+export default ManageProducts;

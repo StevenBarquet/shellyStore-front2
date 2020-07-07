@@ -62,7 +62,6 @@ export const deleteOneInCart = (items, idString) => dispatch => {
 };
 
 export const startUpdateMiniCart = flag => dispatch => {
-  console.log('entró startUpdateMiniCart', flag);
   dispatch({
     type: MINI_UPDATE,
     payload: flag
@@ -70,7 +69,6 @@ export const startUpdateMiniCart = flag => dispatch => {
 };
 
 export const startUpdating = () => dispatch => {
-  console.log('entró startUpdating');
   dispatch({
     type: NEED_UPDATE
   });
