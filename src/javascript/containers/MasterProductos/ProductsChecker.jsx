@@ -27,7 +27,9 @@ const typesR = {
   SET_OBJECT: 'SET_OBJECT',
   CLOSE_FORM: 'CLOSE_FORM',
   IS_GETTING_PROD: 'IS_GETTING_PROD',
-  GET_ALL_PRODUCTS: 'GET_ALL_PRODUCTS'
+  GET_ALL_PRODUCTS: 'GET_ALL_PRODUCTS',
+  INCREASE: 'INCREASE',
+  FINISH_ANALYZE: 'FINISH_ANALYZE'
 };
 
 function reducerManageProducts(state, action) {
@@ -37,10 +39,16 @@ function reducerManageProducts(state, action) {
       return { ...state, ...payload };
 
     case typesR.IS_GETTING_PROD:
-      return { ...state, getingProducts: true };
+      return { ...state, getingProducts: true, isLoading: true };
 
     case typesR.GET_ALL_PRODUCTS:
-      return { ...state, currentList: payload, getingProducts: false };
+      return { ...state, currentList: payload, isLoading: false };
+
+    case typesR.INCREASE:
+      return { ...state, anlyzedElement: 1 + state.anlyzedElement };
+
+    case typesR.FINISH_ANALYZE:
+      return { ...state, getingProducts: false };
 
     case typesR.CLOSE_FORM:
       return {
@@ -67,38 +75,46 @@ const ProductsChecker = () => {
     updateList: [],
     isEdit: false,
     getingProducts: false,
+    isLoading: false,
     anlyzedElement: 0
   });
 
+  useEffect(() => {
+    setTimeout(() => doAnalize(), 300);
+  });
 
-  function doAnalize (flagValue) {
-    console.log('No entra flagValue', flagValue);
-    dispatch({
-      type: typesR.SET_OBJECT,
-      payload: { startAnalyze: flagValue }
-    });
-  }
-
-  function analyze() {
-    const {currentList}= state
-    const {length} = currentList
-    for (let i = 0; i < length; i++) {
-      const item = currentList[i];
-      printCurrentAn(i);
-      if(item.idMercadoLibre){
-        setTimeout(()=> console.log('Search diferences at index; ', i), 800);
-      } else {
-        setTimeout(()=> console.log('No compatible at index; ', i), 300);
-      }
+  function doAnalize() {
+    const { getingProducts, anlyzedElement, currentList } = state;
+    console.log(
+      'doAnalize\ngetingProducts ',
+      getingProducts,
+      ' anlyzedElement ',
+      anlyzedElement,
+      'currentList.length',
+      currentList.length
+    );
+    if (getingProducts && anlyzedElement <= currentList.length - 1) {
+      analyze();
+    } else if (
+      getingProducts &&
+      anlyzedElement !== 0 &&
+      anlyzedElement === currentList.length
+    ) {
+      dispatch({ type: typesR.FINISH_ANALYZE });
     }
   }
 
-  function printCurrentAn(index) {
-    console.log('anlyzedElement : ', index+1);
-    dispatch({
-      type: typesR.SET_OBJECT,
-      payload: { anlyzedElement: index+1 }
-    });
+  async function analyze() {
+    const { currentList, anlyzedElement } = state;
+    const i = anlyzedElement;
+    const item = currentList[i];
+    if (item.idMercadoLibre) {
+      const res = await superMLhandler(item.idMercadoLibre);
+      console.log('product', i, ' : ', res);
+    } else {
+      console.log('No compatible at index; ', i);
+    }
+    dispatch({ type: typesR.INCREASE });
   }
 
   function getAll() {
@@ -117,8 +133,6 @@ const ProductsChecker = () => {
       <UpdaterLoader
         currentList={state.currentList}
         getingProducts={state.getingProducts}
-        startAnalyze={state.startAnalyze}
-        analyze={analyze}
         anlyzedElement={state.anlyzedElement}
       />
     </div>

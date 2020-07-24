@@ -2,7 +2,11 @@
 // ---Dependencys
 import React from 'react';
 import { Progress } from 'antd';
-import { BorderHorizontalOutlined , SettingFilled, RadiusBottomleftOutlined  } from '@ant-design/icons';
+import {
+  BorderHorizontalOutlined,
+  SettingFilled,
+  RadiusBottomleftOutlined
+} from '@ant-design/icons';
 // ---ComonComponents
 import ButtonMlg from 'CommonComps/ButtonMlg';
 // ---Components
@@ -18,7 +22,6 @@ const Cargando = () => {
   return (
     <div className="updater-loading">
       <h1>Cargando ...{<SettingFilled spin />}</h1>
-      
     </div>
   );
 };
@@ -28,7 +31,8 @@ const ChangeAnayst = props => {
   return (
     <div className="updater-loading">
       <h1>
-        Se encontraron <span>{total}</span> productos ...{<BorderHorizontalOutlined spin />}
+        Se encontraron <span>{total}</span> productos ...
+        {<BorderHorizontalOutlined spin />}
       </h1>
     </div>
   );
@@ -36,11 +40,12 @@ const ChangeAnayst = props => {
 
 const Analyzing = props => {
   const { total, anlyzedElement } = props;
-  const percentage =  Math.trunc(anlyzedElement*100/total)
+  const percentage = Math.trunc((anlyzedElement * 100) / total);
   return (
     <div className="updater-loading">
       <h1>
-       Analizando <span>{`${anlyzedElement} de ${total}`}</span> productos ...{<RadiusBottomleftOutlined spin />}
+        Analizando <span>{`${anlyzedElement} de ${total}`}</span> productos ...
+        {<RadiusBottomleftOutlined spin />}
       </h1>
       <div className="updater-progress-container">
         <Progress type="circle" percent={percentage} />
@@ -51,16 +56,15 @@ const Analyzing = props => {
 
 // ------------------------------------------ COMPONENT -----------------------------------------
 const UpdaterLoader = props => {
-  const { currentList, getingProducts, startAnalyze, analyze, anlyzedElement } = props;
+  const { currentList, getingProducts, isLoading, anlyzedElement } = props;
   function loaderSelector() {
     console.log('currentList: ', currentList);
-    if (getingProducts) {
+    if (isLoading) {
       return <Cargando />;
-    } else if (!getingProducts && currentList.length > 0 && !startAnalyze) {
-      setTimeout(()=> analyze(), 300);
-      return <ChangeAnayst total={currentList.length} />;
-    } else if (startAnalyze && currentList.length > 0) {
-      return <Analyzing anlyzedElement={anlyzedElement} total={currentList.length} />;
+    } else if (!isLoading && currentList.length > 0 && getingProducts) {
+      return (
+        <Analyzing anlyzedElement={anlyzedElement} total={currentList.length} />
+      );
     } else {
       return <Nada />;
     }
